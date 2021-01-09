@@ -6,31 +6,31 @@ const add = document.getElementById("add"),
 
 //createStore, action , subscribe
 
+const ADD = "ADD",
+    MINUS = "MINUS"
+
+span.innerText = 0;
+
 const countModifier = (count = 0, action) => {
-    // modify createStore 
-    console.log(count, action)
-    if (action.type === "ADD") {
-        return count + 1
-    } else if (action.type === "MINUS") {
-        return count - 1
-    } else {
-        return count
+
+    switch (action.type) {
+        case ADD:
+            return count + 1
+        case MINUS:
+            return count - 1
+        default:
+            return count
     }
+
 }
-
-
 const countStore = createStore(countModifier)
-
 
 const onChange = () => {
     span.innerText = countStore.getState()
 }
 
-
 countStore.subscribe(onChange)
 
-console.log(countStore)
 
-add.addEventListener("click", () => countStore.dispatch({ type: "ADD" }))
-minus.addEventListener("click", () => countStore.dispatch({ type: "MINUS" }))
-
+add.addEventListener("click", () => countStore.dispatch({ type: ADD }))
+minus.addEventListener("click", () => countStore.dispatch({ type: MINUS }))
