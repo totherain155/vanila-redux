@@ -1,36 +1,47 @@
 import { createStore } from "redux"
 
-const add = document.getElementById("add"),
-    minus = document.getElementById("minus"),
-    span = document.querySelector("span")
+// make toDoList by vanilla JS
 
-//createStore, action , subscribe
+const form = document.querySelector("form"),
+    input = document.querySelector("input"),
+    ul = document.querySelector("ul");
 
-const ADD = "ADD",
-    MINUS = "MINUS"
+const ADD_TODO = "ADD_TODO",
+    DELETE_TODO = "DELETE_TODO"
 
-span.innerText = 0;
-
-const countModifier = (count = 0, action) => {
-
+const reduce = (state = [], action) => {
+    //switch 
+    console.log(action)
     switch (action.type) {
-        case ADD:
-            return count + 1
-        case MINUS:
-            return count - 1
+        case ADD_TODO:
+            return []
+        case DELETE_TODO:
+            return []
         default:
-            return count
+            return state
+
     }
-
-}
-const countStore = createStore(countModifier)
-
-const onChange = () => {
-    span.innerText = countStore.getState()
 }
 
-countStore.subscribe(onChange)
+const store = createStore(reduce)
+
+/*
+const showToDo = (text) => {
+    const li = document.createElement("li");
+    li.innerText = text
+    ul.appendChild(li)
+}
+*/
 
 
-add.addEventListener("click", () => countStore.dispatch({ type: ADD }))
-minus.addEventListener("click", () => countStore.dispatch({ type: MINUS }))
+const handleSubmit = (event) => {
+    event.preventDefault()
+    const toDo = input.value;
+    input.value = "";
+    //  showToDo(toDo)
+    store.dispatch({ type: ADD_TODO, text: toDo })
+}
+
+
+
+form.addEventListener("submit", handleSubmit)
