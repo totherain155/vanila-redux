@@ -1,47 +1,74 @@
-import { createStore } from "redux"
-
-// make toDoList by vanilla JS
+import { createStore } from "redux";
 
 const form = document.querySelector("form"),
     input = document.querySelector("input"),
-    ul = document.querySelector("ul");
+    ul = document.querySelector('ul');
 
 const ADD_TODO = "ADD_TODO",
-    DELETE_TODO = "DELETE_TODO"
+    DELETE_TODO = "DELETE_TODO";
 
-const reduce = (state = [], action) => {
-    //switch 
-    console.log(action)
-    switch (action.type) {
-        case ADD_TODO:
-            return []
-        case DELETE_TODO:
-            return []
-        default:
-            return state
 
+const addToDo = (text) => {
+    return {
+        type: ADD_TODO,
+        text
     }
 }
 
-const store = createStore(reduce)
-
-/*
-const showToDo = (text) => {
-    const li = document.createElement("li");
-    li.innerText = text
-    ul.appendChild(li)
+const deleteToDo = (id) => {
+    return {
+        type: DELETE_TODO,
+        id
+    }
 }
-*/
 
+const reducer = (state = [], action) => {
+    switch (action.type) {
+        case ADD_TODO:
+            return [{ text: action.text, id: Date.now() }, ...state];
+        case DELETE_TODO:
+            return [];
+        default:
+            return state;
+    }
+}
+
+const store = createStore(reducer);
+
+store.subscribe(() => console.log(store.getState()))
+
+const dispatchAddToDo = (text) => {
+    store.dispatch(addToDo(text));
+};
+
+const dispatchDeleteToDo = (event) => {
+    const id = event.target.parentNode.id;
+    store.dispatch(deleteToDo(id))
+}
+
+const showToDos = () => {
+    const toDos = store.getState();
+    ul.innerHTML = "";
+    toDos.forEach(toDo => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.innerText = "DEL";
+        btn.addEventListener("click", dispatchDeleteToDo);
+        li.id = toDo.id;
+        li.innerText = toDo.text;
+        li.appendChild(btn)
+        ul.appendChild(li)
+    })
+}
+
+
+store.subscribe(showToDos)
 
 const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const toDo = input.value;
     input.value = "";
-    //  showToDo(toDo)
-    store.dispatch({ type: ADD_TODO, text: toDo })
+    dispatchAddToDo(toDo);
 }
-
-
 
 form.addEventListener("submit", handleSubmit)
