@@ -1,74 +1,29 @@
 import { createStore } from "redux";
 
 const form = document.querySelector("form"),
-    input = document.querySelector("input"),
-    ul = document.querySelector('ul');
-
-const ADD_TODO = "ADD_TODO",
-    DELETE_TODO = "DELETE_TODO";
+    input = form.querySelector("input"),
+    ul = document.querySelector("ul")
 
 
-const addToDo = (text) => {
-    return {
-        type: ADD_TODO,
-        text
-    }
-}
+//showToDo
 
-const deleteToDo = (id) => {
-    return {
-        type: DELETE_TODO,
-        id
-    }
-}
+const showToDo = (text) => {
 
-const reducer = (state = [], action) => {
-    switch (action.type) {
-        case ADD_TODO:
-            return [{ text: action.text, id: Date.now() }, ...state];
-        case DELETE_TODO:
-            return [];
-        default:
-            return state;
-    }
-}
-
-const store = createStore(reducer);
-
-store.subscribe(() => console.log(store.getState()))
-
-const dispatchAddToDo = (text) => {
-    store.dispatch(addToDo(text));
-};
-
-const dispatchDeleteToDo = (event) => {
-    const id = event.target.parentNode.id;
-    store.dispatch(deleteToDo(id))
-}
-
-const showToDos = () => {
-    const toDos = store.getState();
-    ul.innerHTML = "";
-    toDos.forEach(toDo => {
-        const li = document.createElement("li");
-        const btn = document.createElement("button");
-        btn.innerText = "DEL";
-        btn.addEventListener("click", dispatchDeleteToDo);
-        li.id = toDo.id;
-        li.innerText = toDo.text;
-        li.appendChild(btn)
-        ul.appendChild(li)
-    })
+    const li = document.createElement("li")
+    li.innerText = text
+    ul.appendChild(li)
 }
 
 
-store.subscribe(showToDos)
 
 const handleSubmit = (event) => {
-    event.preventDefault();
-    const toDo = input.value;
-    input.value = "";
-    dispatchAddToDo(toDo);
+    event.preventDefault()
+    const value = input.value
+    input.value = '';
+    showToDo(value)
+
+
+
 }
 
 form.addEventListener("submit", handleSubmit)
