@@ -1,6 +1,7 @@
 // redux toDoList 
 import { createStore } from "redux"
 
+//deleteToDo , break down it into tiny function
 
 
 const form = document.querySelector("form"),
@@ -16,6 +17,22 @@ const showToDo = (text) => {
 */
 const ADD_TODO = "ADD_TODO",
     DELETE_TODO = "DELETE_TODO"
+
+const addToDo = (text) => {
+    return {
+        type: ADD_TODO,
+        text
+    }
+
+}
+
+const deleteToDo = (id) => {
+    return {
+        type: DELETE_TODO,
+        id
+    }
+
+}
 
 const reducer = (state = [], action) => {
     console.log(action)
@@ -34,13 +51,41 @@ const store = createStore(reducer)
 
 store.subscribe(() => console.log(store.getState()))
 
+const dispatchAddToDo = (text) => {
+    store.dispatch(addToDo(text))
+}
+
+const dispatchDeleteToDo = (event) => {
+    const id = event.target.parentNode.id;
+    store.dispatch(deleteToDo(id))
+}
+
+const showToDo = () => {
+    const toDos = store.getState()
+    ul.innerHTML = ""
+    toDos.forEach(element => {
+        const li = document.createElement("li")
+        const btn = document.createElement("button")
+        btn.innerText = "DEL"
+        btn.addEventListener("click", dispatchDeleteToDo)
+        li.id = element.id
+        li.innerText = element.text
+        li.appendChild(btn)
+        ul.appendChild(li)
+    }
+    )
+}
+
+store.subscribe(showToDo)
+
+
 
 const handleSubmit = (event) => {
     event.preventDefault()
     const value = input.value
     input.value = '';
     // showToDo(value)
-    store.dispatch({ type: ADD_TODO, text: value })
+    dispatchAddToDo(value)
 
 }
 
