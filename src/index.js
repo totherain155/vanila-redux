@@ -27,9 +27,11 @@ const reducer = (state = [], action) => {
 
     switch (action.type) {
         case ADD_TODO:
-            return [...state, { text: action.text, id: Date.now() }]
+            return [{ text: action.text, id: Date.now() }, ...state,]
         case DELETE_TODO:
-            return []
+            return state.filter(element => element.id !== action.id)
+
+        //action은 id와 함께 넘어온다.
         default:
             return state
     }
@@ -44,7 +46,7 @@ const dispatchAddToDo = (text) => {
 }
 
 const dispatchDeleteToDo = (event) => {
-    const id = event.target.parentNode.id
+    const id = parseInt(event.target.parentNode.id)
     store.dispatch(deleteToDo(id))
 
 }
