@@ -1,20 +1,9 @@
-// redux toDoList 
 import { createStore } from "redux"
-
-//deleteToDo , break down it into tiny function
-
 
 const form = document.querySelector("form"),
     input = form.querySelector("input"),
     ul = document.querySelector("ul")
 
-/*
-const showToDo = (text) => {
-    const li = document.createElement("li")
-    li.innerText = text
-    ul.appendChild(li)
-}
-*/
 const ADD_TODO = "ADD_TODO",
     DELETE_TODO = "DELETE_TODO"
 
@@ -23,7 +12,6 @@ const addToDo = (text) => {
         type: ADD_TODO,
         text
     }
-
 }
 
 const deleteToDo = (id) => {
@@ -31,11 +19,12 @@ const deleteToDo = (id) => {
         type: DELETE_TODO,
         id
     }
-
 }
 
+
+// modify data   
 const reducer = (state = [], action) => {
-    console.log(action)
+
     switch (action.type) {
         case ADD_TODO:
             return [...state, { text: action.text, id: Date.now() }]
@@ -46,47 +35,58 @@ const reducer = (state = [], action) => {
     }
 }
 
-
 const store = createStore(reducer)
 
-store.subscribe(() => console.log(store.getState()))
+store.subscribe(() => store.getState())
 
 const dispatchAddToDo = (text) => {
     store.dispatch(addToDo(text))
 }
 
 const dispatchDeleteToDo = (event) => {
-    const id = event.target.parentNode.id;
+    const id = event.target.parentNode.id
     store.dispatch(deleteToDo(id))
+
 }
 
+
+
+
 const showToDo = () => {
-    const toDos = store.getState()
+    const toDo = store.getState()
     ul.innerHTML = ""
-    toDos.forEach(element => {
+    toDo.forEach(element => {
         const li = document.createElement("li")
         const btn = document.createElement("button")
         btn.innerText = "DEL"
-        btn.addEventListener("click", dispatchDeleteToDo)
         li.id = element.id
         li.innerText = element.text
+        btn.addEventListener("click", dispatchDeleteToDo)
         li.appendChild(btn)
         ul.appendChild(li)
-    }
-    )
+
+    })
 }
+
 
 store.subscribe(showToDo)
 
 
 
+/*
+const showToDo = (text) => {
+    const li = document.createElement("li")
+    li.innerText = text
+    ul.appendChild(li)
+}
+*/
+
 const handleSubmit = (event) => {
     event.preventDefault()
     const value = input.value
-    input.value = '';
+    input.value = ""
     // showToDo(value)
     dispatchAddToDo(value)
-
 }
 
 
