@@ -7,52 +7,30 @@ const form = document.querySelector("form"),
 const ADD_TODO = "ADD_TODO",
     DELETE_TODO = "DELETE_TODO"
 
-const addToDo = (text) => {
-    return {
-        type: ADD_TODO,
-        text
-    }
-}
-
-const deleteToDo = (id) => {
-    return {
-        type: DELETE_TODO,
-        id
-    }
-}
 
 
-// modify data   
 const reducer = (state = [], action) => {
-
+    console.log(action)
     switch (action.type) {
         case ADD_TODO:
-            return [{ text: action.text, id: Date.now() }, ...state,]
+            return [...state, { text: action.text, id: Date.now() }]
         case DELETE_TODO:
-            return state.filter(element => element.id !== action.id)
-
-        //action은 id와 함께 넘어온다.
+            return state.filter(element => element.id !== parseInt(action.id))
         default:
             return state
+
     }
 }
+
+const deleteToDo = (event) => {
+    const id = parseInt(event.target.parentNode.id)
+    store.dispatch({ type: DELETE_TODO, id })
+}
+
 
 const store = createStore(reducer)
 
 store.subscribe(() => store.getState())
-
-const dispatchAddToDo = (text) => {
-    store.dispatch(addToDo(text))
-}
-
-const dispatchDeleteToDo = (event) => {
-    const id = parseInt(event.target.parentNode.id)
-    store.dispatch(deleteToDo(id))
-
-}
-
-
-
 
 const showToDo = () => {
     const toDo = store.getState()
@@ -61,18 +39,15 @@ const showToDo = () => {
         const li = document.createElement("li")
         const btn = document.createElement("button")
         btn.innerText = "DEL"
-        li.id = element.id
         li.innerText = element.text
-        btn.addEventListener("click", dispatchDeleteToDo)
+        li.id = element.id
+        btn.addEventListener("click", deleteToDo)
         li.appendChild(btn)
         ul.appendChild(li)
-
     })
 }
 
-
 store.subscribe(showToDo)
-
 
 
 /*
@@ -80,15 +55,20 @@ const showToDo = (text) => {
     const li = document.createElement("li")
     li.innerText = text
     ul.appendChild(li)
+
 }
 */
+
+
+
 
 const handleSubmit = (event) => {
     event.preventDefault()
     const value = input.value
     input.value = ""
     // showToDo(value)
-    dispatchAddToDo(value)
+    store.dispatch({ type: ADD_TODO, text: value })
+
 }
 
 
