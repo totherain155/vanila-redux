@@ -4,17 +4,20 @@ import Home from "../routes/Home"
 import Detail from "../routes/Detail"
 
 
+
 const App = () => {
     return (
-        <Router>
-            <Route path="/" exact component={Home}></Route>
-            <Route path="/:id" component={Detail}></Route>
-        </Router>
+        <div>
+            <Router>
+                <Route path="/" exact component={Home}></Route>
+                <Route path="/:id" component={Detail}></Route>
+            </Router>
+        </div>
     )
 }
 
 
-
-
-
 export default App;
+
+
+
