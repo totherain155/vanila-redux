@@ -1,39 +1,42 @@
+// createStore
+
+
+import React from "react"
 import { createStore } from "redux"
 
-const ADD_TODO = "ADD_TODO",
-    DELETE_TODO = "DELETE_TODO";
+const ADD = "ADD",
+    DELETE = "DELETE"
 
 export const addToDo = (text) => {
-    return (
-        {
-            type: ADD_TODO,
-            text
-        }
-    )
+    return {
+        type: ADD,
+        text
+    }
 }
 
 export const deleteToDo = (id) => {
-    return ({
-        type: DELETE_TODO,
+    return {
+        type: DELETE,
         id
-    })
+    }
 }
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-        case ADD_TODO:
+        case ADD:
             return [...state, { text: action.text, id: Date.now() }]
-        case DELETE_TODO:
+        case DELETE:
             return state.filter(element => element.id !== action.id)
         default:
-            return state
+            state
+
     }
 }
 
-
 const store = createStore(reducer)
 
-store.subscribe()
 
 
 export default store
+
+
