@@ -21,15 +21,14 @@ export const deleteToDo = (id) => {
     }
 }
 
-const reducer = (state = [], action) => {
+const reducer = (state = ["lala"], action) => {
     switch (action.type) {
         case ADD:
-            return [...state, { text: action.text, id: Date.now() }]
+            return [{ text: action.text, id: Date.now() }, ...state]
         case DELETE:
             return state.filter(element => element.id !== action.id)
         default:
-            state
-
+            return state;
     }
 }
 
@@ -37,6 +36,6 @@ const store = createStore(reducer)
 
 
 
-export default store
+export default store;
 
-
+store.getState()
