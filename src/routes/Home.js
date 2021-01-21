@@ -28,9 +28,8 @@ const Home = ({ toDos }) => {
         </div>
     )
 }
-
-function mapStateToProps(state) {
+const mapToProps = (state) => {
     return { toDos: state }
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapToProps)(Home)
