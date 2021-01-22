@@ -7,7 +7,6 @@ import ToDo from "../components/ToDo"
 
 
 
-
 const Home = ({ toDos, addToDo }) => {
 
     const [text, setText] = useState("")
@@ -31,8 +30,7 @@ const Home = ({ toDos, addToDo }) => {
             </form>
             <ul>
                 {toDos.map(element =>
-                    <ToDo {...element} key={element.id} />
-                )}
+                    <ToDo {...element} key={element.id} />)}
             </ul>
         </div>
     )
@@ -42,12 +40,12 @@ const Home = ({ toDos, addToDo }) => {
 const mapStateToProps = (state) => {
     return { toDos: state }
 }
+
 const mapDispatchToProps = (dispatch) => {
     return {
         addToDo: (text) => dispatch(actionCreators.addToDo(text))
     }
 }
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

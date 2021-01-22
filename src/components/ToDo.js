@@ -1,8 +1,9 @@
 import React from "react"
-import { connect } from "react-redux";
-import { actionCreators } from "../store";
+import { connect } from "react-redux"
+import { actionCreators } from "../store"
 
 
+// mapDispatchToProps
 
 const ToDo = ({ text, onBtnClick }) => {
     return (
@@ -12,10 +13,11 @@ const ToDo = ({ text, onBtnClick }) => {
     )
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onBtnClick: () => dispatch(actionCreators.deleteToDo(parseInt(ownProps.id)))
+        onBtnClick: () => dispatch(actionCreators.deleteToDo(ownProps.id))
     }
 }
+
 
 export default connect(null, mapDispatchToProps)(ToDo);
