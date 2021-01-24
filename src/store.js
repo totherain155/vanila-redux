@@ -1,8 +1,10 @@
-// createStore
+//createStore, reducer, connect
+
+import React from "react"
 import { createStore } from "redux"
 
-const ADD = "ADD"
-const DELETE = "DELETE"
+const ADD = "ADD",
+    DELETE = "DELETE"
 
 const addToDo = (text) => {
     return {
@@ -24,10 +26,9 @@ const reducer = (state = [], action) => {
         case DELETE:
             return state.filter(element => element.id !== action.id)
         default:
-            return state
+            return state;
     }
 }
-
 
 const store = createStore(reducer)
 
@@ -35,6 +36,5 @@ export const actionCreators = {
     addToDo,
     deleteToDo
 }
-
 
 export default store;
